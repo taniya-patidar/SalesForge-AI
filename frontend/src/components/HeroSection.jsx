@@ -13,15 +13,7 @@ function HeroSection() {
 
       </div>
 
-      <div className="mini-chat-card">
-
-        <h3>Live AI Conversation</h3>
-
-        <p>
-          Proposal generated successfully ✅
-        </p>
-
-      </div>
+      
 
     </div>
   );

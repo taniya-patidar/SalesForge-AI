@@ -1,6 +1,6 @@
 import Sidebar from "./components/Sidebar";
 import StatsCards from "./components/StatsCards";
-import DashboardContent from "./components/DashboardContent";
+import  AICapilot from "./components/AICapilot";
 import ChatSection from "./components/ChatSection";
 import TopBar from "./components/TopBar";
 import HeroSection from "./components/HeroSection";
@@ -16,16 +16,18 @@ function App() {
         <TopBar />
 
         <HeroSection />
+         <StatsCards />
 
-        <div className="content-layout">
+           <AICapilot /> 
+            </div>
 
-          <div className="left-section">
+       
 
-            <StatsCards />
+          <div className="right-panel">
 
-            <DashboardContent />
+           
 
-          </div>
+        
 
           <ChatSection />
 
@@ -33,7 +35,7 @@ function App() {
 
       </div>
 
-    </div>
+   
   );
 }
 

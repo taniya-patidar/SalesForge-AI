@@ -1,4 +1,4 @@
-function DashboardContent() {
+function AICapilot() {
   return (
     <div className="dashboard-content">
 
@@ -42,4 +42,4 @@ function DashboardContent() {
   );
 }
 
-export default DashboardContent;
+export default  AICapilot;
