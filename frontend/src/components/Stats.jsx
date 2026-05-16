@@ -1,23 +1,25 @@
-import Reveal from "./Reveal";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function Stats() {
+  const ref = useScrollAnimation();
+
   const stats = [
-    ["3.2×", "More Leads"],
-    ["87%", "Email Boost"],
-    ["60%", "Less Work"],
-    ["5000+", "Users"],
+    { num: "3.2", suffix: "×", label: "More Leads" },
+    { num: "87", suffix: "%", label: "Email Open Rate" },
+    { num: "60", suffix: "%", label: "Less Manual Work" },
+    { num: "5,000", suffix: "+", label: "Businesses" },
   ];
 
   return (
-    <Reveal>
-      <div className="sf-stats">
-        {stats.map(([num, label]) => (
-          <div className="sf-stat" key={label}>
-            <div className="sf-stat-num">{num}</div>
-            <div className="sf-stat-label">{label}</div>
+    <div className="sf-stats sf-animate" ref={ref}>
+      {stats.map((stat) => (
+        <div className="sf-stat" key={stat.label}>
+          <div className="sf-stat-num">
+            {stat.num}<span>{stat.suffix}</span>
           </div>
-        ))}
-      </div>
-    </Reveal>
+          <div className="sf-stat-label">{stat.label}</div>
+        </div>
+      ))}
+    </div>
   );
 }
