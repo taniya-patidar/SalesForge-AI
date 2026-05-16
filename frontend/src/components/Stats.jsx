@@ -1,23 +1,21 @@
-import Reveal from "./Reveal";
-
 export default function Stats() {
   const stats = [
-    ["3.2×", "More Leads"],
-    ["87%", "Email Boost"],
-    ["60%", "Less Work"],
-    ["5000+", "Users"],
+    { num: "3.2×", label: "More Leads", highlight: true },
+    { num: "87%", label: "Email Open Rate", highlight: true },
+    { num: "60%", label: "Less Manual Work", highlight: false },
+    { num: "5,000+", label: "Businesses", highlight: false },
   ];
 
   return (
-    <Reveal>
-      <div className="sf-stats">
-        {stats.map(([num, label]) => (
-          <div className="sf-stat" key={label}>
-            <div className="sf-stat-num">{num}</div>
-            <div className="sf-stat-label">{label}</div>
+    <div className="sf-stats">
+      {stats.map((stat) => (
+        <div className="sf-stat" key={stat.label}>
+          <div className="sf-stat-num">
+            {stat.num.split('×')[0]}<span>×</span>
           </div>
-        ))}
-      </div>
-    </Reveal>
+          <div className="sf-stat-label">{stat.label}</div>
+        </div>
+      ))}
+    </div>
   );
 }
