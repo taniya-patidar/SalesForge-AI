@@ -59,7 +59,7 @@ export default function OutcomeCards() {
         {OUTCOMES.map((outcome, i) => (
           <div
             key={i}
-            className={`sf-outcome-card sf-animate sf-animate-delay-${i + 1}`}
+            className="sf-outcome-card"
           >
             <div className="sf-outcome-icon" style={{ color: outcome.accent }}>
               {outcome.icon}

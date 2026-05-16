@@ -10,10 +10,10 @@ export default function Pricing() {
       <h2 className="sf-section-title sf-animate" ref={headerRef}>Simple, Transparent Pricing</h2>
 
       <div className="sf-price-grid">
-        {PLANS.map((plan, i) => (
+        {PLANS.map((plan) => (
           <div
             key={plan.name}
-            className={`sf-price-card sf-animate sf-animate-delay-${i + 1} ${plan.popular ? "popular" : ""}`}
+            className={`sf-price-card ${plan.popular ? "popular" : ""}`}
           >
             <h3>{plan.name}</h3>
 

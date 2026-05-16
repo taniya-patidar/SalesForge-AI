@@ -1,4 +1,3 @@
-import React from 'react';
 // Lucide icons ko import kar rahe hain
 import { Mail, Lock, User, CheckCircle, Smartphone } from 'lucide-react';
 

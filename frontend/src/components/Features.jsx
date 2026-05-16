@@ -34,8 +34,8 @@ export default function Features() {
       <h2 className="sf-section-title sf-animate" ref={headerRef}>Built for Revenue Teams</h2>
 
       <div className="sf-features-grid">
-        {FEATURES.map((feature, i) => (
-          <div className={`sf-feat sf-animate sf-animate-delay-${i + 1}`} key={feature.title}>
+        {FEATURES.map((feature) => (
+          <div className="sf-feat" key={feature.title}>
             <div className="sf-feat-icon">{ICONS[feature.icon]}</div>
             <h3>{feature.title}</h3>
             <p>{feature.desc}</p>

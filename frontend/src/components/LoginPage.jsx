@@ -1,4 +1,3 @@
-import React from 'react';
 import { Mail, Lock, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../index.css';

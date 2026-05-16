@@ -19,7 +19,7 @@ export default function LiveAgentDemo() {
         <p>See how SalesForge qualifies leads, handles objections, and books meetings automatically.</p>
       </div>
 
-      <div className="sf-demo-container sf-animate sf-animate-delay-2">
+      <div className="sf-demo-container">
         <div className="sf-demo-conversation">
           {conversation.map((msg, i) => (
             <div key={i} className={`sf-convo-step ${msg.role}`}>

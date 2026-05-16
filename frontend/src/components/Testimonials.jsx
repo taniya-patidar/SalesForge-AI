@@ -10,8 +10,8 @@ export default function Testimonials() {
         <h2 className="sf-section-title sf-animate" ref={headerRef}>Loved by Sales Teams</h2>
 
         <div className="sf-testimonials-grid">
-          {TESTIMONIALS.map((test, i) => (
-            <div className={`sf-test-card sf-animate sf-animate-delay-${i + 1}`} key={test.author}>
+          {TESTIMONIALS.map((test) => (
+            <div className="sf-test-card" key={test.author}>
               <p className="sf-test-quote">{test.quote}</p>
               <div className="sf-test-author">
                 <div className="sf-test-avatar">{test.initials}</div>
