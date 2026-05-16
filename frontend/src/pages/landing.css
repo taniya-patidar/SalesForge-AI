@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  background: #080810;
+  color: white;
+  font-family: sans-serif;
+}
+
+.sf-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+}
+
+.sf-hero {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.sf-h1 {
+  font-size: 3rem;
+}
+
+.sf-grad {
+  color: #a855f7;
+}
+
+.sf-btn-primary {
+  background: purple;
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: white;
+  text-decoration: none;
+}
+
+.sf-btn-secondary {
+  margin-left: 10px;
+  border: 1px solid gray;
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: white;
+}
+
+.sf-section {
+  padding: 80px 40px;
+}
+
+.sf-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.sf-price-card {
+  padding: 20px;
+  border: 1px solid gray;
+  border-radius: 12px;
+}
+
+.sf-price-card.popular {
+  border: 2px solid purple;
+}
