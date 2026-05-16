@@ -1,44 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-const DEMO_MESSAGES = [
-  { role: "user", text: "Hi, I'm looking for a solution to automate our sales outreach" },
+const CONVERSATION = [
+  { role: "agent", text: "Hi there! I'm your SalesForge AI assistant. How can I help you today?" },
+  { role: "user", text: "I need help automating our sales outreach" },
   { role: "agent", text: "Great! I'd love to help. Tell me a bit about your team size and current outreach process." },
   { role: "user", text: "We're a team of 12 sales reps, currently doing manual outreach" },
   { role: "agent", text: "Perfect. And what's your average deal size? This helps me recommend the right plan." },
   { role: "user", text: "Around $25k-$50k" },
-  { role: "agent", text: "Excellent fit! Let me show you how we helped similar teams 3x their pipeline. Would you like to see a quick demo?", typing: true }
+  { role: "agent", text: "Excellent fit! We've helped similar teams 3x their pipeline. Would you like to see a quick demo?" }
 ];
 
 export default function Hero() {
-  const [messages, setMessages] = useState(DEMO_MESSAGES.slice(0, 2));
-  const [inputValue, setInputValue] = useState("");
+  const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const chatEndRef = useRef(null);
 
-  const simulateTyping = () => {
-    setIsTyping(true);
-    setTimeout(() => {
-      setMessages(DEMO_MESSAGES.slice(0, 4));
-      setIsTyping(false);
-    }, 800);
-  };
+  useEffect(() => {
+    if (currentStep >= CONVERSATION.length) return;
 
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!inputValue.trim()) return;
-    setMessages([...messages, { role: "user", text: inputValue }]);
-    setInputValue("");
-    setTimeout(() => {
-      const nextMsg = DEMO_MESSAGES.find(m => m.role === "agent" && !messages.some(cm => cm.text === m.text));
-      if (nextMsg) {
-        setIsTyping(true);
-        setTimeout(() => {
-          setMessages(prev => [...prev, nextMsg]);
-          setIsTyping(false);
-        }, 1000);
-      }
-    }, 500);
-  };
+    const nextMsg = CONVERSATION[currentStep];
+    const delay = currentStep === 0 ? 1000 : 1500;
+
+    const timeout = setTimeout(() => {
+      setIsTyping(true);
+
+      const typingDuration = Math.min(1500, nextMsg.text.length * 30);
+
+      setTimeout(() => {
+        setMessages(prev => [...prev, { ...nextMsg, visible: true }]);
+        setIsTyping(false);
+        setCurrentStep(prev => prev + 1);
+      }, typingDuration);
+    }, delay);
+
+    return () => clearTimeout(timeout);
+  }, [currentStep]);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
   return (
     <section className="sf-hero">
@@ -89,21 +91,21 @@ export default function Hero() {
                 </div>
               </div>
             )}
+            <div ref={chatEndRef} />
           </div>
 
-          <form className="sf-chat-input" onSubmit={handleSend}>
+          <div className="sf-chat-input">
             <input
               type="text"
-              placeholder="Ask anything..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Watch the conversation..."
+              disabled
             />
-            <button type="submit" className="sf-chat-send">
+            <button className="sf-chat-send" disabled>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </section>

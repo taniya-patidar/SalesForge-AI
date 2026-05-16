@@ -1,4 +1,8 @@
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
+
 export default function LiveAgentDemo() {
+  const ref = useScrollAnimation();
+
   const conversation = [
     { role: "user", label: "You", text: "Hi, I'm looking for a solution to automate our sales outreach" },
     { role: "agent", label: "SalesForge Agent", text: "Great! I'd love to help. Can you tell me about your team size and current outreach challenges?" },
@@ -10,12 +14,12 @@ export default function LiveAgentDemo() {
 
   return (
     <section className="sf-demo-section" id="demo">
-      <div className="sf-demo-header">
+      <div className="sf-demo-header sf-animate" ref={ref}>
         <h2>Watch the agent in action</h2>
         <p>See how SalesForge qualifies leads, handles objections, and books meetings automatically.</p>
       </div>
 
-      <div className="sf-demo-container">
+      <div className="sf-demo-container sf-animate sf-animate-delay-2">
         <div className="sf-demo-conversation">
           {conversation.map((msg, i) => (
             <div key={i} className={`sf-convo-step ${msg.role}`}>

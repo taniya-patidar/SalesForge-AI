@@ -1,16 +1,19 @@
 import { Link } from "react-router-dom";
 import { PLANS } from "../data/landingData";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function Pricing() {
+  const headerRef = useScrollAnimation();
+
   return (
     <section className="sf-section" id="pricing">
-      <h2 className="sf-section-title">Simple, Transparent Pricing</h2>
+      <h2 className="sf-section-title sf-animate" ref={headerRef}>Simple, Transparent Pricing</h2>
 
       <div className="sf-price-grid">
-        {PLANS.map((plan) => (
+        {PLANS.map((plan, i) => (
           <div
             key={plan.name}
-            className={`sf-price-card ${plan.popular ? "popular" : ""}`}
+            className={`sf-price-card sf-animate sf-animate-delay-${i + 1} ${plan.popular ? "popular" : ""}`}
           >
             <h3>{plan.name}</h3>
 

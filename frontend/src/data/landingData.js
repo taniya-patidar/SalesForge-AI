@@ -1,21 +1,21 @@
 export const FEATURES = [
   {
-    icon: "⚡",
+    icon: "chat",
     title: "AI-Powered Conversations",
     desc: "Intelligent chatbots that engage prospects 24/7, qualify leads, and book meetings automatically."
   },
   {
-    icon: "✉",
+    icon: "email",
     title: "Automated Email Sequences",
     desc: "Personalized outreach at scale. AI crafts compelling messages that convert cold leads into customers."
   },
   {
-    icon: "◎",
+    icon: "scoring",
     title: "Smart Lead Scoring",
     desc: "Prioritize your best prospects with AI-analyzed behavior signals and engagement metrics."
   },
   {
-    icon: "◈",
+    icon: "analytics",
     title: "Real-Time Analytics",
     desc: "Track performance across all channels. Optimize campaigns with actionable insights."
   }
