@@ -1,47 +1,14 @@
-import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const CONVERSATION = [
   { role: "agent", text: "Hi there! I'm your SalesForge AI assistant. How can I help you today?" },
   { role: "user", text: "I need help automating our sales outreach" },
-  { role: "agent", text: "Great! I'd love to help. Tell me a bit about your team size and current outreach process." },
-  { role: "user", text: "We're a team of 12 sales reps, currently doing manual outreach" },
-  { role: "agent", text: "Perfect. And what's your average deal size? This helps me recommend the right plan." },
-  { role: "user", text: "Around $25k-$50k" },
-  { role: "agent", text: "Excellent fit! We've helped similar teams 3x their pipeline. Would you like to see a quick demo?" }
+  { role: "agent", text: "Great! I'd love to help. Tell me about your team size and current outreach process." },
+  { role: "user", text: "We're a team of 12 sales reps, doing manual outreach" },
+  { role: "agent", text: "Perfect. And what's your average deal size?" }
 ];
 
 export default function Hero() {
-  const [messages, setMessages] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    if (currentStep >= CONVERSATION.length) return;
-
-    const nextMsg = CONVERSATION[currentStep];
-    const delay = currentStep === 0 ? 1000 : 1500;
-
-    const timeout = setTimeout(() => {
-      setIsTyping(true);
-
-      const typingDuration = Math.min(1500, nextMsg.text.length * 30);
-
-      setTimeout(() => {
-        setMessages(prev => [...prev, { ...nextMsg, visible: true }]);
-        setIsTyping(false);
-        setCurrentStep(prev => prev + 1);
-      }, typingDuration);
-    }, delay);
-
-    return () => clearTimeout(timeout);
-  }, [currentStep]);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
-
   return (
     <section className="sf-hero">
       <div className="sf-hero-layout">
@@ -77,27 +44,24 @@ export default function Hero() {
           </div>
 
           <div className="sf-chat-messages">
-            {messages.map((msg, i) => (
+            {CONVERSATION.map((msg, i) => (
               <div key={i} className={`sf-msg sf-msg-${msg.role}`}>
                 <div className="sf-msg-bubble">{msg.text}</div>
               </div>
             ))}
-            {isTyping && (
-              <div className="sf-msg sf-msg-agent">
-                <div className="sf-msg-bubble sf-msg-typing">
-                  <span className="sf-typing-dot"></span>
-                  <span className="sf-typing-dot"></span>
-                  <span className="sf-typing-dot"></span>
-                </div>
+            <div className="sf-msg sf-msg-agent">
+              <div className="sf-msg-bubble sf-msg-typing">
+                <span className="sf-typing-dot"></span>
+                <span className="sf-typing-dot"></span>
+                <span className="sf-typing-dot"></span>
               </div>
-            )}
-            <div ref={chatEndRef} />
+            </div>
           </div>
 
           <div className="sf-chat-input">
             <input
               type="text"
-              placeholder="Watch the conversation..."
+              placeholder="Ask anything..."
               disabled
             />
             <button className="sf-chat-send" disabled>
