@@ -8,6 +8,7 @@ import Testimonials from "../components/Testimonials";
 import Pricing from "../components/Pricing";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
+import AIChatWidget from "../components/AIChatWidget";
 
 import "../styles/landing.css";
 
@@ -24,6 +25,7 @@ export default function LandingPage() {
       <Pricing />
       <CTA />
       <Footer />
+      <AIChatWidget/>
     </>
   );
 }
