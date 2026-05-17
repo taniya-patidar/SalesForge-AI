@@ -19,10 +19,59 @@ const AI_RESPONSES = {
 
 const QUICK_REPLIES = ["📊 Show Pricing", "🎯 Generate Leads", "✍️ Email Assistant", "🚀 Book Demo"];
 
+// ── Rotating bubble messages ──────────────────────────────────────────────────
+const BUBBLE_MESSAGES = [
+  "👋 Hi! Need help boosting your sales?",
+  "🎯 Generate 3× more leads with AI!",
+  "✍️ Write cold emails in seconds!",
+  "📊 See your sales analytics live!",
+  "🚀 Book a free demo today!",
+  "💡 500+ teams trust SalesForge AI!",
+];
+
+// ── Floating Bubble Component ─────────────────────────────────────────────────
+function FloatingBubble({ onOpen, onDismiss }) {
+  const [msgIndex, setMsgIndex] = useState(0);
+  const [show, setShow]         = useState(true);
+
+  // Rotate message every 3 seconds with exit/enter animation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShow(false);
+      setTimeout(() => {
+        setMsgIndex((i) => (i + 1) % BUBBLE_MESSAGES.length);
+        setShow(true);
+      }, 350);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="cw-bubble-msg">
+      <AnimatePresence mode="wait">
+        {show && (
+          <motion.div
+            key={msgIndex}
+            className="cw-bubble-msg-card"
+            initial={{ opacity: 0, y: 10,  scale: 0.92 }}
+            animate={{ opacity: 1, y: 0,   scale: 1    }}
+            exit={{    opacity: 0, y: -10, scale: 0.92 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            onClick={onOpen}
+          >
+            <div className="cw-bubble-text">{BUBBLE_MESSAGES[msgIndex]}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <button className="cw-bubble-dismiss" onClick={onDismiss} aria-label="Dismiss">✕</button>
+    </div>
+  );
+}
+
 function getAIResponse(msg) {
   const lower = msg.toLowerCase();
   if (lower.includes("price") || lower.includes("cost") || lower.includes("plan") || lower.includes("📊")) return AI_RESPONSES.pricing;
-  if (lower.includes("demo")||   lower.includes("book")||   lower.includes("🚀"))  return AI_RESPONSES.demo;
+  if (lower.includes("demo") ||  lower.includes("book") ||  lower.includes("🚀"))  return AI_RESPONSES.demo;
   if (lower.includes("lead")  || lower.includes("🎯"))   return AI_RESPONSES.leads;
   if (lower.includes("email") || lower.includes("✍️"))   return AI_RESPONSES.email;
   return AI_RESPONSES.default[Math.floor(Math.random() * AI_RESPONSES.default.length)];
@@ -33,7 +82,7 @@ function getTime() {
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
-function ChatHeader({ onClose }) {
+ function ChatHeader({ onClose }) {
   return (
     <div className="cw-header">
       <div className="cw-header-avatar">
@@ -90,6 +139,7 @@ function TypingIndicator() {
     </motion.div>
   );
 }
+
 function QuickReplies({ onSelect }) {
   return (
     <motion.div
@@ -159,7 +209,7 @@ function FabButton({ open, showDot, onClick }) {
             transition={{ duration: 0.2 }}
           >
             <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-          </motion.svg>
+ </motion.svg>
         ) : (
           <motion.svg
             key="chat"
@@ -184,12 +234,14 @@ function FabButton({ open, showDot, onClick }) {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function AIChatWidget() {
-  const [open, setOpen]           = useState(false);
-  const [showDot, setShowDot]     = useState(true);
-  const [input, setInput]         = useState("");
-  const [typing, setTyping]       = useState(false);
-  const [showQuick, setShowQuick] = useState(true);
-  const [messages, setMessages]   = useState([
+  const [open, setOpen]             = useState(false);
+  const [showDot, setShowDot]       = useState(true);
+  const [input, setInput]           = useState("");
+  const [typing, setTyping]         = useState(false);
+  const [showQuick, setShowQuick]   = useState(true);
+  const [showBubble, setShowBubble]           = useState(false);
+  const [bubbleDismissed, setBubbleDismissed] = useState(false);
+  const [messages, setMessages]               = useState([
     {
       id: 1,
       role: "ai",
@@ -201,6 +253,25 @@ export default function AIChatWidget() {
   const bottomRef = useRef(null);
   const inputRef  = useRef(null);
 
+  // Show bubble after 3s on page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!bubbleDismissed) setShowBubble(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Also show bubble when user scrolls down (in case they dismissed timer)
+  useEffect(() => {
+    const onScroll = () => {
+      if (!bubbleDismissed && !open && window.scrollY > 150) {
+        setShowBubble(true);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [bubbleDismissed, open]);
+
   // Auto-scroll to latest message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -210,10 +281,12 @@ export default function AIChatWidget() {
   useEffect(() => {
     if (open) {
       setShowDot(false);
+      setShowBubble(false);
       setTimeout(() => inputRef.current?.focus(), 350);
     }
   }, [open]);
- const sendMessage = (text) => {
+
+  const sendMessage = (text) => {
     const msg = text || input.trim();
     if (!msg) return;
 
@@ -255,8 +328,7 @@ export default function AIChatWidget() {
             transition={{ type: "spring", stiffness: 320, damping: 26 }}
           >
             <ChatHeader onClose={() => setOpen(false)} />
-
-            <div className="cw-messages">
+ <div className="cw-messages">
               <AnimatePresence initial={false}>
                 {messages.map((m) => <ChatMessage key={m.id} message={m} />)}
                 {typing && <TypingIndicator key="typing" />}
@@ -280,6 +352,23 @@ export default function AIChatWidget() {
             <div className="cw-footer">
               Powered by <span>SalesForge AI</span>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Floating Bubble ── */}
+      <AnimatePresence>
+        {showBubble && !open && (
+          <motion.div
+            initial={{ opacity: 0, x: 20, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0,  scale: 1   }}
+            exit={{    opacity: 0, x: 20, scale: 0.9 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <FloatingBubble
+              onOpen={() => { setOpen(true); setShowBubble(false); }}
+              onDismiss={() => { setShowBubble(false); setBubbleDismissed(true); }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

@@ -182,7 +182,7 @@
   background: rgba(255, 255, 255, 0.12);
   color: #f1f0ff;
 }
-/* ── Messages ── */
+ /* ── Messages ── */
 .cw-messages {
   flex: 1;
   overflow-y: auto;
